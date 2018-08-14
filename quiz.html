@@ -1,0 +1,132 @@
+<!DOCTYPE html5>
+<html>
+<head>
+<style type="text/css">
+* {font-family: monospace; font-size: 10px;}
+.hidden {display: none;}
+#main {text-align: center;}
+#btn_ask,
+#btn_answer {margin: 1em; padding: 0.2em 1em; border: none; background: #99f; font-size: 2em;}
+#question, 
+#answer {margin: 1em; padding: 1em; background: #dedede;}
+#answer {margin: 1em; font-size: 2em;}
+#txt_answer {border: 1px solid #000; padding: 0.2em 1em;}
+#txt_answer.error {background: #e88;}
+#txt_answer.ok {background: #8e8;}
+</style>
+<title>Chord quiz...</title>
+</head>
+<body>
+	<h1>A chord quiz.</h1>
+	<h2>Choose root notes</h2>
+	<div id="root_notes"></div>
+	<h2>Choose chords</h2>
+	<div id="chords"></div>
+
+	<hr />
+
+	<div id="main">
+		<input type="button" id="btn_ask" value="Hit me!" />
+
+		<div id="question" class="hidden">
+			<b id="root_question"></b> <b id="type_question"></b>
+			<input type="button" id="btn_answer" value="Get answer" />
+
+			<p>Comma separated answer here:
+				<input type="text" id="txt_answer" value="" />
+			</p>
+		</div>
+
+		<div id="answer" class="hidden"></div>
+	</div>
+	
+</body>
+<script type="text/javascript" src="intervals.js"></script>
+<script type="text/javascript" src="chords.js"></script>
+<script type="text/javascript">
+function build_check(_name, _parent) {
+
+	let input=document.createElement('input');
+	input.type='checkbox';
+	input.value=_name;
+	input.name=_name;
+	input.setAttribute('checked', true);
+
+	let label=document.createElement('label');
+	label.appendChild(input);
+	label.innerHTML+=_name;
+
+	let container=document.createElement('span');
+	container.appendChild(label);
+	_parent.appendChild(container);
+}
+
+function get_rand(_max) {
+
+	return Math.floor(Math.random() * Math.floor(_max));
+}
+
+function ask() {
+
+	let roots=root_note_container.querySelectorAll('input:checked');
+	if(!roots.length) {
+		alert('Some root note must be selected!');
+	}
+
+	current_root=roots[get_rand(roots.length)].value;
+
+	let types=chord_container.querySelectorAll('input:checked');
+	if(!types.length) {
+		alert('Some chord type must be selected!');
+	}
+
+	current_type=types[get_rand(types.length)].value;
+
+	root_question.innerHTML=current_root;
+	type_question.innerHTML=current_type;
+
+	question_container.classList.remove('hidden');
+	answer_container.classList.add('hidden');
+	txt_answer.value='';
+	txt_answer.className='';
+	txt_answer.focus();
+}
+
+function answer() {
+
+	let result=get_chord(current_root, current_type).join(',');
+	answer_container.innerHTML=result;
+	answer_container.classList.remove('hidden');
+
+	if(txt_answer.value.length) {
+		txt_answer.className=txt_answer.value.toUpperCase().trim()==result.toUpperCase() ? 'ok' : 'error';
+	}
+}
+
+let root_note_container=document.getElementById('root_notes');
+let chord_container=document.getElementById('chords');
+let btn_ask=document.getElementById('btn_ask');
+let btn_answer=document.getElementById('btn_answer');
+let root_question=document.getElementById('root_question');
+let type_question=document.getElementById('type_question');
+let question_container=document.getElementById('question');
+let answer_container=document.getElementById('answer');
+let txt_answer=document.getElementById('txt_answer');
+let current_root=null;
+let current_type=null;
+
+
+
+//Build selectors...
+all_notes.forEach( (_note) => {
+	build_check(_note, root_note_container);
+});
+
+chord_formulae.forEach( (_chord) => {
+	build_check(_chord.name, chord_container);
+});
+
+btn_ask.addEventListener('click', () => {ask();}, true);
+btn_answer.addEventListener('click', () => {answer();}, true);
+</script>
+</html>

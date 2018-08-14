@@ -1,6 +1,7 @@
 //	   0    1     2    3     4    5    6     7    8     9    10    11
 let notes=['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 let natural_notes=['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+let all_notes=['C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'Eb', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'];
 let intervals_semitones={
 	'1':	0,
 	'2b': 	1,
