@@ -24,13 +24,11 @@ chord_formulae.forEach( (_chord) => {
 	row.insertCell().innerHTML=_chord.name;
 });
 
-
 //And now all chords for each note.
 ['C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'Eb', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'].forEach( (_note) => {
 	let row=table.insertRow();
 	row.insertCell().innerHTML=_note;
 	chord_formulae.forEach( (_chord) => {
-
 		let chord=get_chord(_note, _chord.name);
 		row.insertCell().innerHTML=chord.join(',');
 	});

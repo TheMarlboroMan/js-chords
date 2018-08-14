@@ -112,13 +112,22 @@ function enharmonise(_canonical, _expected) {
 	let index_c=notes.indexOf(_canonical);
 	let index_e=notes.indexOf(_expected);
 
-	let distance=index_c - index_e;
+	let back_distance=Math.abs(index_c - index_e);
+	let forward_distance=0;
 
-	if(distance < 0) {
-		return _expected+'b'.repeat(-distance);
+	while(index_e != index_c) {
+		++forward_distance;
+		++index_e;
+		if(index_e >= notes.length) {
+			index_e=0;
+		}
 	}
-	else if(distance > 0) {
-		return _expected+'#'.repeat(distance);
+
+	if(back_distance < forward_distance) {
+		return _expected+'b'.repeat(back_distance);
+	}
+	else if(forward_distance < back_distance) {
+		return _expected+'#'.repeat(forward_distance);
 	}
 	else return _expected;
 }
