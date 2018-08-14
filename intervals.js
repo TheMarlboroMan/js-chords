@@ -107,9 +107,6 @@ function name_note_with_interval(_from, _interval) {
 //!Enharmonises _canonical so it is named like _expected...
 function enharmonise(_canonical, _expected) {
 
-	//Let us find the distance between canonical and expected.
-	//These are the flats or sharps we have to add to canonical.
-
 	let index_c=notes.indexOf(_canonical);
 	let index_e=notes.indexOf(_expected);
 
@@ -118,16 +115,27 @@ function enharmonise(_canonical, _expected) {
 		return _canonical;
 	}
 
-	let back_distance=Math.abs(index_c - index_e);
-	let forward_distance=0;
+	//Rest of cases: find the smallest distance.
+	function calculate_distance(_begin, _end, _direction) {
 
-	while(index_e != index_c) {
-		++forward_distance;
-		++index_e;
-		if(index_e >= notes.length) {
-			index_e=0;
+		let dist=0;
+		while(_begin != _end) {
+			++dist;
+			_begin+=_direction;
+
+			if(_begin >= notes.length) {
+				_begin=0;
+			}
+			else if(_begin < 0) {
+				_begin=notes.length-1;
+			}
 		}
-	}
+
+		return dist;
+	};
+
+	let back_distance=calculate_distance(index_e, index_c, -1);
+	let forward_distance=calculate_distance(index_e, index_c, 1);
 
 	if(back_distance < forward_distance) {
 		return _expected+'b'.repeat(back_distance);
@@ -135,7 +143,9 @@ function enharmonise(_canonical, _expected) {
 	else if(forward_distance < back_distance) {
 		return _expected+'#'.repeat(forward_distance);
 	}
-	else return _expected;
+	else {
+		throw new Error("Could not enharmonise "+_canonical+" to "+_expected);
+	}
 }
 
 function calculate_interval_target(_from, _interval) {
