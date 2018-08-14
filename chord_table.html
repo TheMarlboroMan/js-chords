@@ -1,0 +1,39 @@
+<!DOCTYPE html5>
+<html>
+<head>
+<style type="text/css">
+* {font-family: monospace; font-size: 10px;}
+table {border: 1px solid #000; border-collapse: collapse;}
+table td {border: 1px solid #000; padding: 0.2em;}
+</style>
+<title>Chord tables...</title>
+</head>
+<body>
+	<h1>A lot of chords...</h1>
+	<table id="main_table"></table>
+</body>
+<script type="text/javascript" src="intervals.js"></script>
+<script type="text/javascript" src="chords.js"></script>
+<script type="text/javascript">
+let table=document.getElementById('main_table');
+
+//Let us add the headers...
+let row=table.insertRow();
+row.insertCell('tones / chords');
+chord_formulae.forEach( (_chord) => {
+	row.insertCell().innerHTML=_chord.name;
+});
+
+
+//And now all chords for each note.
+['C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'Eb', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'].forEach( (_note) => {
+	let row=table.insertRow();
+	row.insertCell().innerHTML=_note;
+	chord_formulae.forEach( (_chord) => {
+
+		let chord=get_chord(_note, _chord.name);
+		row.insertCell().innerHTML=chord.join(',');
+	});
+});
+</script>
+</html>

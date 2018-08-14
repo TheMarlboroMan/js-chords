@@ -1,25 +1,36 @@
-let chord_formulae={
+let chord_formulae=[
+	{name: 'maj', 		intervals: ['1', '3', '5']},
+	{name: 'min',		intervals: ['1', '3b', '5']},
+	{name: 'aug',		intervals: ['1', '3', '5#']},
+	{name: 'dim',		intervals: ['1', '3b', '5b']},
+	{name: 'sus2',		intervals: ['1', '2', '5']},
+	{name: 'sus4',		intervals: ['1', '4', '5']},
+	{name: 'phr',		intervals: ['1', '2b', '5']},
+	{name: 'lyd',		intervals: ['1', '4#', '5']},
+	{name: 'maj7',		intervals: ['1', '3', '5', '7']},
+	{name: '-7',		intervals: ['1', '3b', '5', '7b']},
+	{name: '7',		intervals: ['1', '3', '5', '7b']},
+	{name: '-7b5',		intervals: ['1', '3b', '5b', '7b']},
+	{name: 'dim7',		intervals: ['1', '3b', '5b', '7bb']},
+	{name: 'maj7#5',	intervals: ['1', '3', '5#', '7']},
+	{name: 'maj7b5',	intervals: ['1', '3', '5b', '7']},
+	{name: 'minmaj7',	intervals: ['1', '3b', '5', '7']}
+];
 
-	//Triads...
-	'maj':		['1', '3', '5'],
-	'min':		['1', '3b', '5'],
-	'aug':		['1', '3', '5#'],
-	'dim':		['1', '3b', '5b'],
-	'sus2':		['1', '2', '5'],
-	'sus4':		['1', '4', '5'],
-	'phr':		['1', '2b', '5'],
-	'lyd':		['1', '4#', '5'],
-	'maj7':		['1', '3', '5', '7'],
-	'-7':		['1', '3b', '5', '7b'],
-	'7':		['1', '3', '5', '7b'],
-	'-7b5':		['1', '3b', '5b', '7b'],
-	'dim7':		['1', '3b', '5b', '7bb'],
-	'maj7#5':	['1', '3', '5#', '7'],
-	'maj7b5':	['1', '3', '5b', '7'],
-	'minmaj7':	['1', '3b', '5', '7']
-};
+function chord_formula_by_name(_name) {
 
-function chord(_root, _type) {
+	let result=chord_formulae.find( (_item) => {
+		return _item.name===_name;
+	});
+
+	if(undefined===result) {
+		throw new Error("Invalid chord type "+_name);
+	}
+
+	return result.intervals;
+}
+
+function get_chord(_root, _type) {
 
 	let root=_root.toUpperCase();
 
@@ -31,23 +42,18 @@ function chord(_root, _type) {
 		throw new Error('Invalid root '+_root);
 	}
 
-
-	let formula=chord_formulae[_type];
-	if(undefined===formula) {
-		throw new Error("Invalid chord type "+_type);
-	}
-
 	let tones=[];
-	formula.forEach( (_item) => {
+	chord_formula_by_name(_type).forEach( (_item) => {
 		tones.push(calculate_interval_target(root, _item));
 	});
 
 	return tones;
 }
-
-console.log(chord('C', 'maj'));
-console.log(chord('Db', 'maj'));
-console.log(chord('B', 'aug'));
-console.log(chord('G', '7'));
-console.log(chord('C', 'maj7'));
-console.log(chord('A', '7'));
+/*
+console.log(get_chord('C', 'maj'));
+console.log(get_chord('Db', 'maj'));
+console.log(get_chord('B', 'aug'));
+console.log(get_chord('G', '7'));
+console.log(get_chord('C', 'maj7'));
+console.log(get_chord('A', '7'));
+*/

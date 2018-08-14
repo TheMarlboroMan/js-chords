@@ -7,8 +7,8 @@ let intervals_semitones={
 	'2': 	2,
 	'3b':	3,
 	'3':	4,
-	'4b':	5,
-	'4':	6,
+	'4':	5,
+	'4#':	6,
 	'5b':	6,
 	'5':	7,
 	'5#':	8,
@@ -31,7 +31,7 @@ function name_of_note(_note) {
 function skip_of_interval(_interval) {
 
 	if(undefined===intervals_semitones[_interval]) {
-		throw new Error(interval+' is not a valid interval');
+		throw new Error(_interval+' is not a valid interval');
 	}
 	return parseInt(_interval.substr(0, 1), 10);
 }
