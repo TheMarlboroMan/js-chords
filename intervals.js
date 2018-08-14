@@ -113,6 +113,11 @@ function enharmonise(_canonical, _expected) {
 	let index_c=notes.indexOf(_canonical);
 	let index_e=notes.indexOf(_expected);
 
+	//Edge case: same name for the two notes... just get the canonical.
+	if(_canonical.substr(0,1)==_expected.substr(0,1)) {
+		return _canonical;
+	}
+
 	let back_distance=Math.abs(index_c - index_e);
 	let forward_distance=0;
 

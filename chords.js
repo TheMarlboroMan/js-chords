@@ -33,6 +33,7 @@ function chord_formula_by_name(_name) {
 function get_chord(_root, _type) {
 
 	let root=_root.toUpperCase();
+console.log(root);
 
 	//Just to validate...
 	try {
